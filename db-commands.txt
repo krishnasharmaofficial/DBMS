@@ -1,0 +1,1215 @@
+-------------------DAY 2 COMMANDS-------------------------------------
+create database aapka_apna_bank;
+use aapka_apna_bank;
+create table branch(
+branch_id varchar(10) NOT NULL,
+branch_ifsc varchar(10) NOT NULL,
+street varchar(10) NOT NULL,
+city varchar(20) NOT NULL,
+state varchar(30) NOT NULL,
+pincode int(6) NOT NULL,
+PRIMARY KEY(branch_id)
+);
+
+
+create table employee(
+emp_id varchar(10) NOT NULL,
+emp_name varchar(30) NOT NULL,
+emp_mob varchar(10) NOT NULL,
+emp_address varchar(40) NOT NULL,
+emp_designation varchar(20) NOT NULL,
+emp_branch varchar(10) NOT NULL,
+PRIMARY KEY(emp_id)
+);
+
+
+create table customer(
+cust_id varchar(10) NOT NULL,
+cust_name varchar(30) NOT NULL,
+cust_mob varchar(10) NOT NULL,
+cust_address varchar(40) NOT NULL,
+cust_aadhar varchar(12) NOT NULL,
+cust_accno varchar(15) NOT NULL,
+PRIMARY KEY(cust_id)
+);
+
+
+create table account(
+acc_type varchar(10) NOT NULL,
+acc_no varchar(15) NOT NULL,
+acc_bal float(10) NOT NULL,
+acc_branch varchar(10) NOT NULL,
+PRIMARY KEY(acc_no)
+);
+
+
+create table debit_card(
+card_no varchar(16) NOT NULL,
+card_name varchar(30) NOT NULL,
+card_validity varchar(7) NOT NULL,
+card_pin int(4) NOT NULL,
+card_cvv int(3) NOT NULL,
+card_accno varchar(15) NOT NULL,
+PRIMARY KEY(card_no)
+);
+
+
+create table fixed_deposit(
+fd_id varchar(15) NOT NULL,
+fd_amt int(10) NOT NULL,
+fd_duration float(3) NOT NULL,
+fd_interest float(5) NOT NULL,
+fd_creation timestamp NOT NULL,
+fd_status varchar(20) NOT NULL,
+fd_accno varchar(15) NOT NULL,
+PRIMARY KEY(fd_id)
+);
+
+create table loan(
+loan_type varchar(15) NOT NULL,
+loan_id varchar(15) NOT NULL,
+loan_amt int(10) NOT NULL,
+loan_duration float(3) NOT NULL,
+loan_interest float(5) NOT NULL,
+loan_approval timestamp NOT NULL,
+loan_balamt float(20) NOT NULL,
+loan_accno varchar(15) NOT NULL,
+PRIMARY KEY(loan_id)
+);
+
+create table loan_payment(
+loan_id varchar(15) NOT NULL,
+trans_id varchar(15) NOT NULL,
+trans_amt float(10) NOT NULL,
+trans_time timestamp NOT NULL,
+PRIMARY KEY(trans_id)
+);
+
+create table credit_card(
+ccard_no varchar(16) NOT NULL,
+ccard_name varchar(30) NOT NULL,
+ccard_validity varchar(7) NOT NULL,
+ccard_pin int(4) NOT NULL,
+ccard_cvv int(3) NOT NULL,
+ccard_limit float NOT NULL,
+ccard_bill float NOT  NULL,
+ccard_lastdate timestamp NOT NULL,
+ccard_accno varchar(15) NOT NULL,
+PRIMARY KEY(ccard_no)
+);
+
+create table credit_card_payment(
+cc_no varchar(16) NOT NULL,
+cc_trans_id varchar(15) NOT NULL,
+cc_trans_amt float(10) NOT NULL,
+cc_trans_time timestamp NOT NULL,
+PRIMARY KEY(cc_trans_id)
+);
+
+
+alter table employee add constraint FK_emp_branch FOREIGN KEY(emp_branch) REFERENCES branch(branch_id);
+
+alter table account add constraint FK_acc_branch FOREIGN KEY(acc_branch) REFERENCES branch(branch_id);
+
+alter table customer add constraint FK_cust_accno FOREIGN KEY(cust_accno) REFERENCES account(acc_no);
+
+alter table debit_card add constraint FK_card_accno FOREIGN KEY(card_accno) REFERENCES account(acc_no);
+
+alter table fixed_deposit add constraint FK_fd_accno FOREIGN KEY(fd_accno) REFERENCES account(acc_no);
+
+alter table loan add constraint FK_loan_accno FOREIGN KEY(loan_accno) REFERENCES account(acc_no);
+
+alter table credit_card add constraint FK_ccard_accno FOREIGN KEY(ccard_accno) REFERENCES account(acc_no);
+
+alter table credit_card_payment add constraint FK_cc_no FOREIGN KEY(cc_no) REFERENCES credit_card(ccard_no);
+
+alter table loan_payment add constraint FK_loan_id FOREIGN KEY(loan_id) REFERENCES loan(loan_id);
+
+
+-----------------------------------------------------------------BRANCH TABLE------------------------------------------------------------------------------
+INSERT INTO BRANCH VALUES('A001','AAP234894','ECT PHASE 1','BENGALURU','KARNATAKA',263138);
+INSERT INTO BRANCH VALUES('A002','AAP234895','ECT PHASE 2','BENGALURU','KARNATAKA',263138);
+INSERT INTO BRANCH VALUES('A003','AAP234896','M G ROAD','BENGALURU','KARNATAKA',263137);
+INSERT INTO BRANCH VALUES('A004','AAP234897','KATRAJ','PUNE','MAHARASHTRA',411046);
+INSERT INTO BRANCH VALUES('A005','AAP234898','SAKET','DELHI','DELHI',453612);
+INSERT INTO BRANCH VALUES('A006','AAP234899','THANE WEST','MUMBAI','MAHARASHTRA',400050);
+INSERT INTO BRANCH VALUES('A007','AAP234900','SALT LAKE','CALCUTTA','WEST BENGAL',323457);
+
+----------------------------------------------------------EMPLOYEE TABLE------------------------------------------------------------------------------------
+INSERT INTO EMPLOYEE VALUES('A201900001','KAMLI','8521479654','E-CITY PHASE 2 BANGALORE','CASHIER','A001');
+INSERT INTO EMPLOYEE VALUES('A201900002','MAHESH','8341479456','E-CITY PHASE 1 BANGALORE','MANAGER','A001');
+INSERT INTO EMPLOYEE VALUES('A201900003','SURESH','9521659650','E-CITY PHASE 2 BANGALORE','CASHIER','A002');
+INSERT INTO EMPLOYEE VALUES('A201900004','SHASHANK','9921479612','KATRAJ PUNE','AUDITOR','A004');
+
+----------------------------------------------------------------ACCOUNT TABLE------------------------------------------------------------------------------
+INSERT INTO ACCOUNT VALUES('SAVINGS','916010035478965',55114.63,'A001');
+INSERT INTO ACCOUNT VALUES('SAVINGS','916010035478966',576514.63,'A003');
+INSERT INTO ACCOUNT VALUES('SAVINGS','916010035478968',335114.3,'A001');
+INSERT INTO ACCOUNT VALUES('CURRENT','916010035478865',4555114.63,'A004');
+INSERT INTO ACCOUNT VALUES('CURRENT','916010435478965',5534.9,'A005');
+INSERT INTO ACCOUNT VALUES('CURRENT','916010435478989',5534.9,'A006');
+INSERT INTO ACCOUNT VALUES('SAVINGS','916010435478943',5534.9,'A007');
+
+----------------------------------------------------------CUSTOMER TABLE-----------------------------------------------------------------------------------
+INSERT INTO CUSTOMER VALUES('866512741','AKHIL','5623147895','ABC PH.1 HYDERABAD','884563215444',916010035478965);
+INSERT INTO CUSTOMER VALUES('866512742','JOHN','9323147876','M G ROAD','994323215547',916010035478966);
+INSERT INTO CUSTOMER VALUES('866512743','SMITA','8903147812','KOREGOAN PARK, PUNE','304563515498',916010035478968);
+INSERT INTO CUSTOMER VALUES('866512744','KELLY','7723147356','E-CITY PHASE 1,BANGALORE','142563215663',916010035478865);
+INSERT INTO CUSTOMER VALUES('866512745','ABHISHEK','7823147865','ABC PH.1 HYDERABAD','556563218756',916010435478965);
+INSERT INTO CUSTOMER VALUES('866512746','SAMANTHA','9023147800','EAST KOLKATA TOWNSHIP','878676328790',916010435478989);
+INSERT INTO CUSTOMER VALUES('866512747','PRANAV','9831478889','E-CITY PHASE 2,BANGALORE','638763218777',916010435478943);
+
+----------------------------------------------------------DEBIT CARD TABLE---------------------------------------------------------------------------------
+INSERT INTO DEBIT_CARD VALUES('1234432112345678','AKHIL MADALA','04/2023',5678,324,'916010035478965');
+INSERT INTO DEBIT_CARD VALUES('5567324199980987','JOHN MADALA','11/2030',8811,576,'916010035478966');
+INSERT INTO DEBIT_CARD VALUES('9002667654638872','SMITA CHITTETI','09/2021',9642,667,'916010035478968');
+INSERT INTO DEBIT_CARD VALUES('5674123299860908','KELLY SHARMA','03/2020',6675,564,'916010035478865');
+INSERT INTO DEBIT_CARD VALUES('7000657743456267','ABHISHEK KUMAR','12/2031',1998,134,'916010435478965');
+
+----------------------------------------------------------FIXED DEPOSIT TABLE------------------------------------------------------------------------------
+INSERT INTO FIXED_DEPOSIT VALUES('FD565734',15000,0.5,6.3,CURRENT_TIMESTAMP(),'CREATED','916010035478965');
+INSERT INTO FIXED_DEPOSIT VALUES('FD565735',20000,0.5,6.3,CURRENT_TIMESTAMP(),'CREATED','916010035478966');
+INSERT INTO FIXED_DEPOSIT VALUES('FD565736',15000,0.5,6.3,CURRENT_TIMESTAMP(),'CREATED','916010435478965');
+
+----------------------------------------------------------LOAN PAYMENT TABLE------------------------------------------------------------------------------
+INSERT INTO CREDIT_CARD VALUES('4321098734567634','AKHIL MADALA','09/2025',5678,324,50000.00,30000.00,'2019-10-01','916010035478965');
+INSERT INTO CREDIT_CARD VALUES('9987112456560086','KELLY SHARMA','10/2023',7772,725,80000.00,25000.00,'2020-11-01','916010035478865');
+INSERT INTO CREDIT_CARD VALUES('6465772387781213','SMITA CHITTETI','05/2025',6543,353,50000.00,30000.00,'2019-06-25','916010035478968');
+
+----------------------------------------------------CREDIT CARD PAYMENT TABLE------------------------------------------------------------------------------
+INSERT INTO CREDIT_CARD_PAYMENT VALUES('4321098734567634','T454234',20000.00,CURRENT_TIMESTAMP());
+INSERT INTO CREDIT_CARD_PAYMENT VALUES('9987112456560086','T454236',15000.00,CURRENT_TIMESTAMP());
+INSERT INTO CREDIT_CARD_PAYMENT VALUES('6465772387781213','T454238',30000.00,CURRENT_TIMESTAMP());
+
+------------------------------------------------------------------LOAN TABLE------------------------------------------------------------------------------
+INSERT INTO LOAN VALUES('EDUCATIONAL','L90878',200000,4,15,CURRENT_TIMESTAMP(),200000,'916010035478965');
+INSERT INTO LOAN VALUES('BUSINESS','L90880',500000,3.5,6.5,CURRENT_TIMESTAMP(),150000,'916010035478966');
+INSERT INTO LOAN VALUES('EDUCATIONAL','L90882',800000,5.5,6.3,CURRENT_TIMESTAMP(),300000,'916010035478966');
+INSERT INTO LOAN VALUES('CAR LOAN','L90884',900000,3.5,6.3,CURRENT_TIMESTAMP(),150000,'916010435478943');
+
+----------------------------------------------------------LOAN PAYMENT TABLE------------------------------------------------------------------------------
+INSERT INTO LOAN_PAYMENT VALUES('L90878','TL9876',15000,CURRENT_TIMESTAMP());
+INSERT INTO LOAN_PAYMENT VALUES('L90880','TL9877',50000,CURRENT_TIMESTAMP());
+INSERT INTO LOAN_PAYMENT VALUES('L90880','TL9878',50000,CURRENT_TIMESTAMP());
+INSERT INTO LOAN_PAYMENT VALUES('L90884','TL9879',10000,CURRENT_TIMESTAMP());
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------DAY 3--------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---> DATA DEFINATION LANGUAGE
+1.CREATE TABLE NEWEMPLOYEE AS SELECT * FROM EMPLOYEE
+2.ALTER TABLE NEWEMPLOYEE ADD PRIMARY KEY(EMP_ID);
+3.ALTER TABLE NEWEMPLOYEE DROP PRIMARY KEY;
+4.TRUNCATE TABLE NEWEMPLOYEE;
+5.DROP TABLE NEWEMPLOYEE;
+
+---> DATA MANUPULATION LANGUAGE
+1.INSERT INTO NEWEMPLOYEE VALUES('A201900005','SHASHI','9965479782','JODHPUR RAJASTHAN','AUDITOR','A005');
+2.UPDATE NEWEMPLOYEE SET EMP_MOB='9965479872' WHERE EMP_ID='A201900005';
+3.DELETE FROM NEWEMPLOYEE WHERE EMP_ID='A201900005';
+
+---> DATA CONTROL LANGUAGE
+1.SET AUTOCOMMIT=0;
+2.UPDATE NEWEMPLOYEE SET EMP_MOB='9965479870' WHERE EMP_ID='A201900004';
+3.ROLLBACK;
+4.SET AUTOCOMMIT=1;
+
+
+---> GRANT AND REVOKE
+1.create user admin@localhost identified by 'admin';
+2.grant all privileges on aapka_apna_bank.* to 'admin'@'localhost';
+3.REVOKE privileges ON aapka_apna_bank FROM 'admin'@'localhost';
+4.drop user 'admin'@'localhost';
+
+
+--->SELECT STATEMENTS
+1.SELECT * FROM ACCOUNT;
+2.SELECT * FROM ACCOUNT WHERE ACC_BRANCH='A001';
+3.SELECT * FROM ACCOUNT WHERE ACC_BRANCH='A001' AND ACC_BAL>100000;
+4.SELECT COUNT(*)AS TOTAL_ACCOUNTS FROM ACCOUNT; 
+5.SELECT SUM(ACC_BAL)AS TOTAL_ACCOUNT_BALANCE FROM ACCOUNT;
+6.SELECT MIN(ACC_BAL)AS MAX_ACCOUNT_BALANCE FROM ACCOUNT;
+7.SELECT MAX(ACC_BAL)AS MIN_ACCOUNT_BALANCE FROM ACCOUNT;
+
+
+--->GROUP BY
+1.SELECT ACC_BRANCH,COUNT(*) FROM ACCOUNT GROUP BY ACC_BRANCH;
+2.SELECT ACC_BRANCH FROM ACCOUNT GROUP BY ACC_BRANCH;
+3.SELECT ACC_BRANCH,SUM(ACC_BAL) FROM ACCOUNT GROUP BY ACC_BRANCH;
+
+
+--->JOIN
+1.SELECT ACC_NO,CUST_NAME FROM ACCOUNT JOIN CUSTOMER ON ACCOUNT.ACC_NO=CUST_ACCNO;
+2.SELECT ACC_NO,CUST_NAME FROM ACCOUNT RIGHT JOIN CUSTOMER ON ACCOUNT.ACC_NO=CUST_ACCNO;
+3.SELECT ACC_NO,CUST_NAME FROM ACCOUNT LEFT JOIN CUSTOMER ON ACCOUNT.ACC_NO=CUST_ACCNO;
+
+
+--->UNION
+1.SELECT * FROM EMPLOYEE UNION SELECT * FROM NEWEMPLOYEE;
+2.SELECT * FROM EMPLOYEE UNION ALL SELECT * FROM NEWEMPLOYEE;
+
+
+--->INTERSECTION
+1.SELECT DISTINCT EMP_ID FROM EMPLOYEE WHERE EMP_ID IN (SELECT EMP_ID FROM NEWEMPLOYEE);
+
+
+-------------------------------------------------------------------DAY 4---------------------------------------------------------------
+
+CREATING VIEW:-
+CREATE VIEW VLOAN AS SELECT LOAN_TYPE,LOAN_ID,LOAN_ACCNO FROM LOAN;
+CREATE VIEW VFIXED_DEPOSIT AS SELECT FD_ID,FD_CREATION,FD_ACCNO FROM FIXED_DEPOSIT;
+CREATE VIEW VACCOUNT AS SELECT ACC_NO,ACC_BAL FROM ACCOUNT; 
+
+LIMIT COMMAMD:-
+SELECT *FROM VACCOUNT LIMIT 4;
+SELECT *FROM VLOAN LIMIT 2;
+SELECT *FROM VFIXED_DEPOSIT LIMIT 1;
+
+UPDATION IN VIEWS:-
+UPDATE VLOAN SET LOAN_TYPE='HOME LOAN' WHERE LOAN_ID='L90878';
+UPDATE VFIXED_DEPOSIT SET FD_CREATION=CURRENT_TIMESTAMP() WHERE FD_ID='FD565734';
+
+NON UPDATABLE VIEW:-
+CREATE VIEW VCUSTOMER AS SELECT CUST_ID,CUST_NAME,CUST_ADDRESS FROM CUSTOMER LIMIT 3; 
+
+UPDATING IN NON- UPDATABLE VIEW:-
+UPDATE VCUSTOMER SET CUST_NAME='DJ KHALID' WHERE CUST_ID = 866512741;------> (VCUSTOMER IS NOT UPDATABLE)
+ 
+TEMPORARY TABLES:-
+
+CREATE TEMPORARY TABLE CREDIT_CARD AS SELECT CCARD_NO,CCARD_NAME,CCARD_VALIDITY,CCARD_ACCNO FROM CREDIT_CARD;
+CREATE TEMPORARY TABLE ACCOUNT AS SELECT ACC_TYPE,ACC_NO,ACC_BRANCH FROM ACCOUNT;
+
+>> FUNCTIONS:-
+
+	SET GLOBAL LOG_BIN_TRUST_FUNCTION_CREATORS = 1;
+FUNCTION 1:
+        SET GLOBAL LOG_BIN_TRUST_FUNCTION_CREATORS = 1;
+	DELIMITER &
+	
+	CREATE FUNCTION COUNTTYPE(CTYPE VARCHAR(20))
+	RETURNS INT
+
+	BEGIN
+	RETURN(SELECT COUNT(ACC_TYPE) FROM ACCOUNT WHERE ACC_TYPE = CTYPE);
+	END &
+	DELIMITER ;
+
+FUNCTION 2:
+	DELIMITER &
+	
+	CREATE FUNCTION SEARCH1(CTYPE VARCHAR(20))
+	RETURNS VARCHAR(30)
+
+	BEGIN
+	RETURN(SELECT STREET FROM BRANCH WHERE STREET LIKE CONCAT('%',CTYPE,'%'));
+	END &
+	DELIMITER ;
+
+FUNCTION 3:
+	DELIMITER @
+	CREATE FUNCTION SEARCHCUSTOMER( CTMRID VARCHAR(30))
+	RETURNS VARCHAR
+	BEGIN
+	RETURN (SELECT CUST_NAME FROM CUSTOMER WHERE CUST_ID=CTMRID);
+	END @
+	DELIMITER ; 
+
+FUNCTION 4:
+
+	DELIMITER *
+	CREATE FUNCTION STATMATURED( FDID VARCHAR(30))
+	RETURNS VARCHAR
+	BEGIN
+	UPDATE FIXED_DEPOSIT SET FD_STATUS = 'MATURED' WHERE FD_ID=FDID;
+	RETURN(SELECT FD_ID FROM FIXED_DEPOSIT WHERE FD_ID = FDID);
+	END *
+	DELIMITER ; 
+
+FUNCTION 5:
+	DELIMITER $
+	CREATE FUNCTION COUNTBR( CTBR VARCHAR(10))
+	RETURNS INT
+	BEGIN
+	RETURN(SELECT COUNT(EMP_BRANCH) FROM EMPLOYEE WHERE EMP_BRANCH = CTBR);
+	END $
+	DELIMITER ; 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+>> PROCEDURES:-
+
+PROCEDURE 1:
+	DELIMITER #
+	CREATE PROCEDURE GETACCOUNTS()
+	
+	BEGIN
+	
+	SELECT * FROM ACCOUNT;
+
+	END #
+
+PROCEDURE 2:
+	DELIMITER #
+	CREATE PROCEDURE SEARCH2(STR1 VARCHAR(20))
+	
+	BEGIN
+	
+	SELECT STREET FROM BRANCH WHERE STREET LIKE CONCAT('%',STR1,'%');
+
+	END #
+	DELIMITER ;
+
+PROCEDURE 3:
+	DELIMITER $
+	CREATE PROCEDURE CNT_TYPE(IN ACTYPE VARCHAR(20), OUT TYPE INT(10))
+	
+	BEGIN
+	
+	SELECT COUNT(ACC_TYPE) FROM ACCOUNT WHERE ACC_TYPE = ACTYPE INTO TYPE;
+
+	END $
+	DELIMITER ;
+
+PROCEDURE 4:
+	DELIMITER @
+	CREATE PROCEDURE CUS_DETAILS(ACCNO VARCHAR(30))
+	BEGIN
+	SELECT CUST_NAME,ACC_BAL FROM CUSTOMER,ACCOUNT WHERE CUSTOMER.CUST_ACCNO=ACCOUNT.ACC_NO;
+	END @
+	DELIMITER ;
+PROCEDURE 5:
+        DELIMITER $
+	CREATE PROCEDURE CUSTTYPE(IN LOID VARCHAR (30))
+   	BEGIN
+ 	DECLARE TRANSACTION FLOAT(30);
+        SELECT TRANS_AMT INTO TRANSACTION FROM LOAN_PAYMENT WHERE LOAN_ID=LOID;
+	IF(TRANSACTION>50000)THEN SELECT 'THANK YOU FOR YOUR COOPERATION';
+	ELSE SELECT 'PLS IMPROVE YOUR TRANSACTIONS';
+	END IF;
+        END $
+	DELIMITER ;
+-------------------------------------------------------------------------DAY 5------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+TRIGGER 1:
+	DELIMITER /
+	CREATE TRIGGER LOANAMT BEFORE INSERT ON LOAN
+	FOR EACH ROW
+	BEGIN
+	IF NEW.LOAN_AMT>1000000 THEN SET NEW.LOAN_AMT=1000000;
+	SIGNAL SQLSTATE '45001'
+	SET MESSAGE_TEXT='YOU CAN PROVIDE MAXIMUM LOAN OF 10 LAKH...';
+	END IF;	
+	END /
+	DELIMITER ;
+
+INSERT INTO LOAN VALUES('HOME','L90885',100000010,4,18,NOW(),10000000,'916010435478989');
+INSERT INTO LOAN VALUES('HOME','L90885',1000000,4,18,NOW(),1000000,'916010435478989');
+
+
+TRIGGER 2:
+	DELIMITER /
+	CREATE TRIGGER FD_AMT_MIN BEFORE INSERT ON FIXED_DEPOSIT
+	FOR EACH ROW
+	BEGIN
+	IF NEW.FD_AMT<1000 THEN SET NEW.FD_AMT=1000;
+	SIGNAL SQLSTATE '45001'
+	SET MESSAGE_TEXT='MIN RS 1000 FIXED DEPOSIT...';
+	END IF;	
+	END /
+	DELIMITER ;
+
+INSERT INTO FIXED_DEPOSIT VALUES('FD565737',500,0.5,6.3,CURRENT_TIMESTAMP(),'CREATED','916010435478989');
+INSERT INTO FIXED_DEPOSIT VALUES('FD565737',5000,0.5,6.3,CURRENT_TIMESTAMP(),'CREATED','916010435478989');
+
+
+TRIGGER 3:
+	DELIMITER /
+	CREATE TRIGGER LOAN_BAL_AMT AFTER INSERT ON LOAN_PAYMENT
+	FOR EACH ROW
+	BEGIN
+	UPDATE LOAN SET LOAN_BALAMT=LOAN_BALAMT-NEW.TRANS_AMT WHERE LOAN_ID=NEW.LOAN_ID;
+	END /
+	DELIMITER ;
+
+INSERT INTO LOAN_PAYMENT VALUES('L90880','TL8987',50000,CURRENT_TIMESTAMP());
+INSERT INTO LOAN_PAYMENT VALUES('L90880','TL9987',10000,CURRENT_TIMESTAMP());
+
+TRIGGER 4:
+	CREATE TABLE CHECK_TRIGGER(CHECKTRIGGER VARCHAR(20));
+      	DELIMITER @
+        CREATE TRIGGER TRIGER_CHECK BEFORE INSERT ON CHECK_TRIGGER 
+ 	FOR EACH ROW
+        BEGIN
+	IF(NEW.CHECKTRIGGER<1 OR NEW.CHECKTRIGGER>100)
+	THEN
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'THE VALUE SHOULD BE BETWEEN 1 AND 100';
+	END IF;
+	END @
+	DELIMITER ;
+
+TRIGGER 5: (CALLING TRIGGER WITH PROCEDURE)
+   	DELIMITER @
+        CREATE TRIGGER UPDATEEMP_DOJ BEFORE UPDATE ON EMPLOYEE 
+ 	FOR EACH ROW
+        BEGIN
+	IF(YEAR(NEW.EMP_DOJ) < 2000 OR YEAR(NEW.EMP_DOJ)>2019)
+	THEN
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'INVALID JOINING YEAR!';
+	END IF;
+	END @
+	DELIMITER ;
+ 
+	DELIMITER &
+	CREATE PROCEDURE UPDATE_EMPLOYEE_JOIN_DATE(IN EMP_JOINING_DATE DATE,IN EMPLOYEE_ID VARCHAR(10))
+	BEGIN
+	UPDATE EMPLOYEE SET EMP_DOJ = EMP_JOINING_DATE WHERE EMP_ID=EMPLOYEE_ID;
+	END &
+	DELIMITER ;
+
+INDEXES:
+	CREATE INDEX CUST_INDEX ON CUSTOMER(CUST_ID);
+        SHOW INDEX FROM CUSTOMER;
+	DROP INDEX CUST_INDEX ON CUSTOMER;
+---------------------------------------------------DAY 6----------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
+
+	CREATE TABLE CUST_BACKUP AS CUST_ID,CUST_NAME,CUST_MOB,CUST_ADDRESS,CUST_AADHAR,CUST_ACCNO FROM CUSTOMER;
+
+	TRUNCATE CUST_BACKUP;
+LOOPS:
+********WHILE LOOP 1:
+
+	DELIMITER @
+	CREATE PROCEDURE INSERT_EMP()
+	BEGIN
+       	DECLARE NUM INT(10);
+    	DECLARE CNT INT(10);
+	SET CNT=0;
+   	SELECT COUNT(*) FROM CUSTOMER INTO NUM;
+	WHILE(CNT<NUM) DO
+	INSERT INTO CUST_BACKUP SELECT *FROM CUSTOMER LIMIT CNT,1;
+	SET CNT=CNT+1;
+	END WHILE;
+	END @
+	DELIMITER ;
+
+********WHILE LOOP 2:
+
+	DELIMITER $
+
+	CREATE PROCEDURE DISP_NAME()
+	BEGIN
+	DECLARE LN_TYPE VARCHAR(3000);
+	DECLARE STRNG VARCHAR(2000);
+	DECLARE CNT INT(10) DEFAULT 0;
+	DECLARE IDX INT(10) DEFAULT 0;
+	
+	SET LN_TYPE='';
+	SET STRNG = '';
+
+	SELECT COUNT(*) FROM LOAN INTO CNT;
+	WHILE(IDX < CNT) DO
+	
+		SELECT LOAN_TYPE INTO LN_TYPE FROM LOAN LIMIT IDX,1;
+		SET STRNG = CONCAT(STRNG,LN_TYPE,',');
+		SET IDX = IDX +1;
+	
+	END WHILE;
+
+	SELECT STRNG;
+	END$
+	DELIMITER ;
+
+********REPEAT LOOP 1:
+
+	DELIMITER /
+	CREATE PROCEDURE mltp(IN MYNUM INT(10))
+	BEGIN
+	
+	DECLARE NUM INT(10);
+	DECLARE MUL INT(10);
+	DECLARE STRNG VARCHAR(10000);
+	SET STRNG = '';
+	SET NUM = 1;
+	SET MUL = 1;
+
+	REPEAT
+		SET MUL=NUM* MYNUM;
+		SET STRNG = CONCAT(STRNG,'\n',MYNUM,'*',NUM,'=',MUL);
+		SET NUM = NUM+1;
+		UNTIL NUM = 12
+	END REPEAT;
+	SELECT STRNG;
+	END /
+	DELIMITER ;
+
+REPEAT LOOP 2:
+	DELIMITER @
+	CREATE PROCEDURE INSRT_EMP()
+	BEGIN
+	DECLARE CNT VARCHAR(10);
+	DECLARE VAL INT(10) DEFAULT 0;
+	SELECT COUNT(*) FROM CUSTOMER INTO CNT;
+	REPEAT
+	INSERT INTO CUST_BACKUP SELECT *FROM CUSTOMER LIMIT VAL,1;
+	SET VAL=VAL+1;
+	UNTIL VAL=CNT
+	END REPEAT;
+	END @
+	DELIMITER ;
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+LOOP 1:
+
+DELIMITER /
+CREATE PROCEDURE ADDBRANCH(IN ID VARCHAR(10),IN IFSC VARCHAR(10),IN STREET VARCHAR(10), IN CITY VARCHAR(10),IN STATE VARCHAR(10),IN PIN INT(6))
+BEGIN
+DECLARE A INT;
+SET A=0;
+INSBRANCH:LOOP
+IF A=1 THEN LEAVE INSBRANCH;
+END IF;
+IF A=0 THEN
+SET A=A+1;
+INSERT INTO BRANCH VALUES(ID,IFSC,STREET,CITY,STATE,PIN);
+END IF;
+END LOOP;
+END /
+
+LOOP 2:
+
+ delimiter /
+ CREATE PROCEDURE chklp()
+ BEGIN
+ DECLARE c  INT;
+ DECLARE strng  VARCHAR(200);
+        
+ SET c = 1;
+ SET strng =  '';
+
+ printnum:  LOOP
+ IF  c = 50 THEN 
+ 	LEAVE  printnum;
+ END  IF;
+ SET c = c + 1;
+ IF  (c mod 2) THEN
+ 	ITERATE  printnum;
+ ELSE
+        SET  strng = CONCAT(strng,c,',');
+ END  IF;
+         END LOOP;    
+          SELECT strng;
+ END /
+
+ Delimiter ;
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+CURSOR:
+
+DELIMITER /
+CREATE PROCEDURE GETEMPLOYEELIST(INOUT EMPLIST VARCHAR(1000))
+BEGIN
+
+DECLARE COMPL INTEGER DEFAULT 0;
+DECLARE ENAME VARCHAR(100) DEFAULT '';
+DECLARE EMPLOYEELIST_CURSOR CURSOR FOR SELECT EMP_NAME FROM EMPLOYEE;
+DECLARE CONTINUE HANDLER
+FOR NOT FOUND SET COMPL=1;
+OPEN EMPLOYEELIST_CURSOR;
+GET_ENAME: LOOP
+FETCH EMPLOYEELIST_CURSOR INTO ENAME;
+IF COMPL=1 THEN LEAVE GET_ENAME;
+END IF;
+SET EMPLIST =CONCAT(EMPLIST,' | ',ENAME);
+END LOOP GET_ENAME;
+CLOSE EMPLOYEELIST_CURSOR;
+END /
+DELIMITER ;
+
+SQL RUN-  
+SET @EMLIST='';
+CALL GETEMPLOYEELIST(@EMLIST);
+SELECT @EMLIST;
+
+--------------------------------------------------------------------------------------------
+
+------------------------------------------------MONGODB-------------------------------------
+
+>use Restaurant
+switched to db Restaurant
+
+> db.createCollection("Menu")
+{ "ok" : 1 }
+> show collections
+Menu
+> db.createCollection("Staff")
+{ "ok" : 1 }
+> db.createCollection("Inventory")
+{ "ok" : 1 }
+> db.createCollection("FoodInventory")
+{ "ok" : 1 }
+> show collections
+FoodInventory
+Inventory
+Menu
+Staff
+
+>>INSERT
+
+> db.Menu.insert({Category:"Appetizers",DishName:"Pepper Steak",Price:200.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Burgers",DishName:"Grilled Chicken Burger",Price:60.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Burgers",DishName:"Grilled Vegetarian Burger",Price:60.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Burgers",DishName:"Cheese Burger",Price:60.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Burgers",DishName:"Grilled Shrimp Burger",Price:75.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Burgers",DishName:"Vegetarian Burger",Price:55.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Steaks&Grill",DishName:"Grilled Chicken Steak",Price:200.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Steaks&Grill",DishName:"Sirloin Steak",Price:250.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Steaks&Grill",DishName:"Ribeye Steak",Price:300.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Steaks&Grill",DishName:"T-Bone Steak",Price:300.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Salads",DishName:"Grilled Chicken",Price:70.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Salads",DishName:"Grilled Shrimp",Price:80.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Salads",DishName:"Green Salad",Price:50.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.insert({Category:"Salads",DishName:"Pink Salmon Salad",Price:90.00})
+WriteResult({ "nInserted" : 1 })
+> db.Menu.find()
+{ "_id" : ObjectId("5d84abd952a1da8b318c7a27"), "Category" : "Appetizers", "DishName" : "Pepper Steak", "Price" : 200 }
+
+>>DISPLAY
+
+> db.Menu.find().pretty()
+{
+        "_id" : ObjectId("5d84abd952a1da8b318c7a27"),
+        "Category" : "Appetizers",
+        "DishName" : "Pepper Steak",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84ac9252a1da8b318c7a28"),
+        "Category" : "Appetizers",
+        "DishName" : "Baby Back Ribs",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84aca052a1da8b318c7a29"),
+        "Category" : "Appetizers",
+        "DishName" : "Rack of Lamb",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84acb652a1da8b318c7a2a"),
+        "Category" : "Appetizers",
+        "DishName" : "Grilled Pepper Chicken",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84ae6152a1da8b318c7a2b"),
+        "Category" : "Burgers",
+        "DishName" : "Grilled Chicken Burger",
+        "Price" : 60
+}
+{
+        "_id" : ObjectId("5d84ae7152a1da8b318c7a2c"),
+        "Category" : "Burgers",
+        "DishName" : "Grilled Vegetarian Burger",
+        "Price" : 60
+}
+{
+        "_id" : ObjectId("5d84ae7f52a1da8b318c7a2d"),
+        "Category" : "Burgers",
+        "DishName" : "Cheese Burger",
+        "Price" : 60
+}
+{
+        "_id" : ObjectId("5d84ae9f52a1da8b318c7a2e"),
+        "Category" : "Burgers",
+        "DishName" : "Grilled Shrimp Burger",
+        "Price" : 75
+}
+{
+        "_id" : ObjectId("5d84aec852a1da8b318c7a2f"),
+        "Category" : "Burgers",
+        "DishName" : "Vegetarian Burger",
+        "Price" : 55
+}
+{
+        "_id" : ObjectId("5d84af6c52a1da8b318c7a30"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "Grilled Chicken Steak",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84af9e52a1da8b318c7a31"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "Sirloin Steak",
+        "Price" : 250
+}
+{
+        "_id" : ObjectId("5d84afae52a1da8b318c7a32"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "Ribeye Steak",
+        "Price" : 300
+}
+{
+        "_id" : ObjectId("5d84afd052a1da8b318c7a33"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "T-Bone Steak",
+        "Price" : 300
+}
+{
+        "_id" : ObjectId("5d84b01152a1da8b318c7a34"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Chicken",
+        "Price" : 70
+}
+{
+        "_id" : ObjectId("5d84b01c52a1da8b318c7a35"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Shrimp",
+        "Price" : 80
+}
+{
+        "_id" : ObjectId("5d84b02d52a1da8b318c7a36"),
+        "Category" : "Salads",
+        "DishName" : "Green Salad",
+        "Price" : 50
+}
+{
+        "_id" : ObjectId("5d84b03c52a1da8b318c7a37"),
+        "Category" : "Salads",
+        "DishName" : "Pink Salmon Salad",
+        "Price" : 90
+}
+
+>>DROP COLLECTION
+
+> show collections
+FoodInventory
+Inventory
+Menu
+Staff
+> db.Staff.drop()
+true
+> show collections
+FoodInventory
+Inventory
+Menu
+
+>>LIST FEW DOCUMENTS
+
+-----With ID
+
+> db.Menu.find({},{'DishName':1})
+{ "_id" : ObjectId("5d84abd952a1da8b318c7a27"), "DishName" : "Pepper Steak" }
+{ "_id" : ObjectId("5d84ac9252a1da8b318c7a28"), "DishName" : "Baby Back Ribs" }
+{ "_id" : ObjectId("5d84aca052a1da8b318c7a29"), "DishName" : "Rack of Lamb" }
+{ "_id" : ObjectId("5d84acb652a1da8b318c7a2a"), "DishName" : "Grilled Pepper Chicken" }
+{ "_id" : ObjectId("5d84ae6152a1da8b318c7a2b"), "DishName" : "Grilled Chicken Burger" }
+{ "_id" : ObjectId("5d84ae7152a1da8b318c7a2c"), "DishName" : "Grilled Vegetarian Burger" }
+{ "_id" : ObjectId("5d84ae7f52a1da8b318c7a2d"), "DishName" : "Cheese Burger" }
+{ "_id" : ObjectId("5d84ae9f52a1da8b318c7a2e"), "DishName" : "Grilled Shrimp Burger" }
+{ "_id" : ObjectId("5d84aec852a1da8b318c7a2f"), "DishName" : "Vegetarian Burger" }
+{ "_id" : ObjectId("5d84af6c52a1da8b318c7a30"), "DishName" : "Grilled Chicken Steak" }
+{ "_id" : ObjectId("5d84af9e52a1da8b318c7a31"), "DishName" : "Sirloin Steak" }
+{ "_id" : ObjectId("5d84afae52a1da8b318c7a32"), "DishName" : "Ribeye Steak" }
+{ "_id" : ObjectId("5d84afd052a1da8b318c7a33"), "DishName" : "T-Bone Steak" }
+{ "_id" : ObjectId("5d84b01152a1da8b318c7a34"), "DishName" : "Grilled Chicken" }
+{ "_id" : ObjectId("5d84b01c52a1da8b318c7a35"), "DishName" : "Grilled Shrimp" }
+{ "_id" : ObjectId("5d84b02d52a1da8b318c7a36"), "DishName" : "Green Salad" }
+{ "_id" : ObjectId("5d84b03c52a1da8b318c7a37"), "DishName" : "Pink Salmon Salad" }
+{ "_id" : ObjectId("5d84b0b152a1da8b318c7a38"), "DishName" : "Cheese Cake" }
+{ "_id" : ObjectId("5d84b0d052a1da8b318c7a39"), "DishName" : "Black Forest" }
+{ "_id" : ObjectId("5d84b0f852a1da8b318c7a3a"), "DishName" : "Creme Caramel" }
+
+-----Without ID
+
+> db.Menu.find({},{_id:0,'DishName':1})
+{ "DishName" : "Pepper Steak" }
+{ "DishName" : "Baby Back Ribs" }
+{ "DishName" : "Rack of Lamb" }
+{ "DishName" : "Grilled Pepper Chicken" }
+{ "DishName" : "Grilled Chicken Burger" }
+{ "DishName" : "Grilled Vegetarian Burger" }
+{ "DishName" : "Cheese Burger" }
+{ "DishName" : "Grilled Shrimp Burger" }
+{ "DishName" : "Vegetarian Burger" }
+{ "DishName" : "Grilled Chicken Steak" }
+{ "DishName" : "Sirloin Steak" }
+{ "DishName" : "Ribeye Steak" }
+{ "DishName" : "T-Bone Steak" }
+{ "DishName" : "Grilled Chicken" }
+{ "DishName" : "Grilled Shrimp" }
+{ "DishName" : "Green Salad" }
+{ "DishName" : "Pink Salmon Salad" }
+{ "DishName" : "Cheese Cake" }
+{ "DishName" : "Black Forest" }
+{ "DishName" : "Creme Caramel" }
+
+>>LISTING SPECIFIC FIELD
+
+> db.Menu.find({Category:'Burgers'}).pretty()
+{
+        "_id" : ObjectId("5d84ae6152a1da8b318c7a2b"),
+        "Category" : "Burgers",
+        "DishName" : "Grilled Chicken Burger",
+        "Price" : 60
+}
+{
+        "_id" : ObjectId("5d84ae7152a1da8b318c7a2c"),
+        "Category" : "Burgers",
+        "DishName" : "Grilled Vegetarian Burger",
+        "Price" : 60
+}
+{
+        "_id" : ObjectId("5d84ae7f52a1da8b318c7a2d"),
+        "Category" : "Burgers",
+        "DishName" : "Cheese Burger",
+        "Price" : 60
+}
+{
+        "_id" : ObjectId("5d84ae9f52a1da8b318c7a2e"),
+        "Category" : "Burgers",
+        "DishName" : "Grilled Shrimp Burger",
+        "Price" : 75
+}
+{
+        "_id" : ObjectId("5d84aec852a1da8b318c7a2f"),
+        "Category" : "Burgers",
+        "DishName" : "Vegetarian Burger",
+        "Price" : 55
+}
+
+>>USING AND CONDITION
+
+> db.Menu.find({Category:'Steaks&Grill',Price:300}).pretty()
+{
+        "_id" : ObjectId("5d84afae52a1da8b318c7a32"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "Ribeye Steak",
+        "Price" : 300
+}
+{
+        "_id" : ObjectId("5d84afd052a1da8b318c7a33"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "T-Bone Steak",
+        "Price" : 300
+}
+
+>>USING OR CONDITION
+
+> db.Menu.find({$or:[{Category:'Steaks&Grill'},{Category:'Appetizers'}]}).pretty()
+{
+        "_id" : ObjectId("5d84abd952a1da8b318c7a27"),
+        "Category" : "Appetizers",
+        "DishName" : "Pepper Steak",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84ac9252a1da8b318c7a28"),
+        "Category" : "Appetizers",
+        "DishName" : "Baby Back Ribs",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84aca052a1da8b318c7a29"),
+        "Category" : "Appetizers",
+        "DishName" : "Rack of Lamb",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84acb652a1da8b318c7a2a"),
+        "Category" : "Appetizers",
+        "DishName" : "Grilled Pepper Chicken",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84af6c52a1da8b318c7a30"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "Grilled Chicken Steak",
+        "Price" : 200
+}
+{
+        "_id" : ObjectId("5d84af9e52a1da8b318c7a31"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "Sirloin Steak",
+        "Price" : 250
+}
+{
+        "_id" : ObjectId("5d84afae52a1da8b318c7a32"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "Ribeye Steak",
+        "Price" : 300
+}
+{
+        "_id" : ObjectId("5d84afd052a1da8b318c7a33"),
+        "Category" : "Steaks&Grill",
+        "DishName" : "T-Bone Steak",
+        "Price" : 300
+}
+
+>>SORTING SINGLE CATEGORY BASED ON PRICE
+
+----ASCENDING ORDER
+
+> db.Menu.find({Category:'Salads'}).sort({Price:1}).pretty()
+{
+        "_id" : ObjectId("5d84b02d52a1da8b318c7a36"),
+        "Category" : "Salads",
+        "DishName" : "Green Salad",
+        "Price" : 50
+}
+{
+        "_id" : ObjectId("5d84b01152a1da8b318c7a34"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Chicken",
+        "Price" : 70
+}
+{
+        "_id" : ObjectId("5d84b01c52a1da8b318c7a35"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Shrimp",
+        "Price" : 80
+}
+{
+        "_id" : ObjectId("5d84b03c52a1da8b318c7a37"),
+        "Category" : "Salads",
+        "DishName" : "Pink Salmon Salad",
+        "Price" : 90
+}
+>db.Menu.find({Category:'Desserts'}).sort({Price:-1}).pretty()
+> db.Menu.find({Category:'Desserts'}).sort({Price:-1}).pretty()
+{
+        "_id" : ObjectId("5d84b0d052a1da8b318c7a39"),
+        "Category" : "Desserts",
+        "DishName" : "Black Forest",
+        "Price" : 55
+}
+{
+        "_id" : ObjectId("5d84b0f852a1da8b318c7a3a"),
+        "Category" : "Desserts",
+        "DishName" : "Creme Caramel",
+        "Price" : 50
+}
+{
+        "_id" : ObjectId("5d84b10a52a1da8b318c7a3b"),
+        "Category" : "Desserts",
+        "DishName" : "Coffee/Tea",
+        "Price" : 20
+}
+
+>>AGGREGATION
+
+> db.Menu.aggregate([{$group:{_id:"$Price",CatCount:{$sum:1}}}])
+{ "_id" : 200, "CatCount" : 5 }
+{ "_id" : 60, "CatCount" : 3 }
+{ "_id" : 80, "CatCount" : 1 }
+{ "_id" : 50, "CatCount" : 3 }
+{ "_id" : 75, "CatCount" : 1 }
+{ "_id" : 90, "CatCount" : 1 }
+{ "_id" : 55, "CatCount" : 2 }
+{ "_id" : 70, "CatCount" : 1 }
+{ "_id" : 250, "CatCount" : 1 }
+{ "_id" : 300, "CatCount" : 2 }
+{ "_id" : 20, "CatCount" : 1 }
+
+>>REMOVE
+
+> db.Menu.remove({DishName:'Creme Caramel'})
+WriteResult({ "nRemoved" : 1 })
+
+>>UPDATE
+
+-----Single update
+> db.Menu.find({Category:'Salads'}).pretty()
+{
+        "_id" : ObjectId("5d84b01152a1da8b318c7a34"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Chicken",
+        "Price" : 70
+}
+{
+        "_id" : ObjectId("5d84b01c52a1da8b318c7a35"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Shrimp",
+        "Price" : 80
+}
+{
+        "_id" : ObjectId("5d84b02d52a1da8b318c7a36"),
+        "Category" : "Salads",
+        "DishName" : "Green Salad",
+        "Price" : 50,
+        "Type" : "Veg"
+}
+{
+        "_id" : ObjectId("5d84b03c52a1da8b318c7a37"),
+        "Category" : "Salads",
+        "DishName" : "Pink Salmon Salad",
+        "Price" : 100,
+        "Type" : "Veg"
+}
+> db.Menu.update({DishName:'Grilled Shrimp'},{$set:{Price:90}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Menu.find({Category:'Salads'}).pretty()
+{
+        "_id" : ObjectId("5d84b01152a1da8b318c7a34"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Chicken",
+        "Price" : 70
+}
+{
+        "_id" : ObjectId("5d84b01c52a1da8b318c7a35"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Shrimp",
+        "Price" : 90
+}
+{
+        "_id" : ObjectId("5d84b02d52a1da8b318c7a36"),
+        "Category" : "Salads",
+        "DishName" : "Green Salad",
+        "Price" : 50,
+        "Type" : "Veg"
+}
+{
+        "_id" : ObjectId("5d84b03c52a1da8b318c7a37"),
+        "Category" : "Salads",
+        "DishName" : "Pink Salmon Salad",
+        "Price" : 100,
+        "Type" : "Veg"
+}
+
+-----Updating using UPDATEMANY
+
+> db.Menu.updateMany({Category:'Salads'},{$set:{Price:70}})
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 3 }
+> db.Menu.find({Category:'Salads'}).pretty()
+{
+        "_id" : ObjectId("5d84b01152a1da8b318c7a34"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Chicken",
+        "Price" : 70
+}
+{
+        "_id" : ObjectId("5d84b01c52a1da8b318c7a35"),
+        "Category" : "Salads",
+        "DishName" : "Grilled Shrimp",
+        "Price" : 70
+}
+{
+        "_id" : ObjectId("5d84b02d52a1da8b318c7a36"),
+        "Category" : "Salads",
+        "DishName" : "Green Salad",
+        "Price" : 70,
+        "Type" : "Veg"
+}
+{
+        "_id" : ObjectId("5d84b03c52a1da8b318c7a37"),
+        "Category" : "Salads",
+        "DishName" : "Pink Salmon Salad",
+        "Price" : 70,
+        "Type" : "Veg"
+}
+
+>>UPDATE USING AND OPERATION
+
+> db.Menu.update({Category:'Burgers',DishName:'Grilled Vegetarian Burger'},{$set:{DishName:'Sweet Potato Burger'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Inventory.update({},{$set:{Tag:'MyTag'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Inventory.find().pretty()
+{
+        "_id" : ObjectId("5d85ef200d65f93b717745c6"),
+        "Category" : "Utensils",
+        "Item" : "Tissue Papers",
+        "Units" : "20 Dozens",
+        "Tag" : "MyTag"
+}
+{
+        "_id" : ObjectId("5d85ef2e0d65f93b717745c7"),
+        "Category" : "Disposables",
+        "Item" : "Take-out Boxes",
+        "Units" : "20 Dozens"
+}
+{
+        "_id" : ObjectId("5d85f62f0d65f93b717745ca"),
+        "Category" : "Utensils",
+        "Item" : "Knives",
+        "Units" : "10 Dozen"
+}
+{
+        "_id" : ObjectId("5d85f72f0d65f93b717745cb"),
+        "Units" : "20 Dozens",
+        "Category" : "Utensils",
+        "Item" : "Spoons"
+}
+> db.Inventory.update({Item:'Spoons'},{$set:{Brand:'CookCase'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Inventory.find().pretty()
+{
+        "_id" : ObjectId("5d85ef200d65f93b717745c6"),
+        "Category" : "Utensils",
+        "Item" : "Tissue Papers",
+        "Units" : "20 Dozens",
+        "Tag" : "MyTag"
+}
+{
+        "_id" : ObjectId("5d85ef2e0d65f93b717745c7"),
+        "Category" : "Disposables",
+        "Item" : "Take-out Boxes",
+        "Units" : "20 Dozens"
+}
+{
+        "_id" : ObjectId("5d85f62f0d65f93b717745ca"),
+        "Category" : "Utensils",
+        "Item" : "Knives",
+        "Units" : "10 Dozen"
+}
+{
+        "_id" : ObjectId("5d85f72f0d65f93b717745cb"),
+        "Units" : "20 Dozens",
+        "Category" : "Utensils",
+        "Item" : "Spoons",
+        "Brand" : "CookCase"
+}
+> db.Inventory.update({Item:'Take-out Boxes'},{$unset:{Units:'20 Dozens'}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Inventory.find().pretty()
+{
+        "_id" : ObjectId("5d85ef2e0d65f93b717745c7"),
+        "Category" : "Disposables",
+        "Item" : "Take-out Boxes"
+}
+{
+        "_id" : ObjectId("5d85f62f0d65f93b717745ca"),
+        "Category" : "Utensils",
+        "Item" : "Knives",
+        "Units" : "10 Dozen"
+}
+{
+        "_id" : ObjectId("5d85f72f0d65f93b717745cb"),
+        "Units" : "20 Dozens",
+        "Category" : "Utensils",
+        "Item" : "Spoons",
+        "Brand" : "CookCase"
+}
+
+>>Removing all Key-Value Pairs
+> db.Menu.update({},{$unset:{Category:""}},{multi:true})
+WriteResult({ "nMatched" : 17, "nUpserted" : 0, "nModified" : 16 })
+
+
+	
