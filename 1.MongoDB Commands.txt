@@ -1,0 +1,104 @@
+Language used by MongoDB for querying - JSON - Java Script Object Notation
+
+1) To see databses
+> show databases
+
+2) To use database
+use <Database Name>-> Even if database not created, it will create the database, and directly use it
+
+Note: Till the time, atleast one collection is not createed in that database, it won't show in the list of databases when you use 'show databases' command
+
+3) To drop database
+use <database_name>
+db.dropDatabase()
+
+4)To create collection
+->db.createCollection("author")
+
+5)-> db.author.insert({name:"Chetan Bhagat"})
+In above case, a collection with 'author' will be created and a document will be inserted in it (even if collection author is not created previously)
+
+6)To see collections
+-> show collections
+
+7) To drop collection
+-> db.author.drop()
+
+8)To insert the records in collection
+
+db.author.insert({eName:'Amit'}) <-- Will insert One Key Value Pair
+
+db.author.insert({Dept:'Accounts'},{Location:'Bangalore'}) <-- Will insert one keyValue pair, ignore second one
+
+db.author.insert([{Dept:'Accounts'},{Location:'Bangalore'}]) <- Will insert two documents by one command
+
+9)To list the documents in collection 
+
+--> db.author.find()
+--> db.author.find().pretty()
+
+9A) To list few documents
+
+-->db.Employees.find({},{'Sex':1,'Location':1}) ==> Will show only sex and location keys with values (and alongwith default ObjectId)
+
+-->db.Employees.find({},{_id:0,'Sex':1,'Location':1}) ==> Will show only sex and location keys
+
+ 
+
+10) To list the documents in collection based on single (something similar to where) condition
+
+Use Northwind
+
+-->db.customers.find({Country:'Mexico'}).pretty()
+-->db.customers.find({ContactTitle:'Sales Agent'}).pretty()
+-->db.customers.find({Region:{$ne:null}}).pretty() <--not equal to null
+
+11) Use of AND condition
+-->db.customers.find({Country:'UK',City:'London'}).pretty()
+
+
+12) Use of or condition
+
+-->db.customers.find({$or:[{Region:'Barcelona'},{Region:'Madrid'}]}).pretty()
+
+13) Use of > , < , = >= , <=
+
+db.Employees.find({Salary:{$gt:25000}}).pretty()
+
+
+
+14) Sorting the result
+
+db.shippers.find().sort({ShipperID:-1}).pretty()
+Will sort the collection on the basis of ShipperID in DESC order
+
+1--> ASC
+-1 --> DESC
+
+15)Use of aggregation -- grouping the data
+
+db.Employees.aggregate([{$group:{_id:"$Dept",DeptCount:{$sum:1}}}])
+It will group the documents on the basis of Department and Count the occurance of each Department and display
+
+db.Employees.aggregate([{$group:{_id:"$Location",cityCount:{$sum:1}}}])
+It will group the documents on the basis of Location and Count the occurance of each City and display
+
+16) Creating Index
+
+db.suppliers.ensureIndex({Country:1})
+
+Will create Index on Country field in suppliers collection
+
+17) Use of Remove
+
+db.Employee.remove({Employeeid:3})
+Will remove(delete) the document with employeeid = 3
+
+
+Max
+
+
+ 
+
+
+  
